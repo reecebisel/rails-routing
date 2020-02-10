@@ -1,0 +1,73 @@
+# Rails Routes Sorcery
+
+### The darkeness you have to imbrace
+
+---
+### This
+```ruby
+  root to: "pages#index"
+```
+---
+### Will get you
+```
+root GET / pages#index
+```
+---
+# Finding the routes
+---
+### Rake
+```bash
+$ bundle exec rake routes
+```
+---
+### More details
+
+```bash
+$ bundle exec rake routes --expanded
+```
+
+```bash
+--[ Route 1 ]-------------------
+Prefix            |
+Verb              | GET
+URI               | /(.:format)
+Controller#Action | pages#index
+```
+
+---
+### Specifics
+```bash
+$ bundle exec rake routes -g root
+$ bundle exec rake routes | grep root
+```
+
+---
+# :boom: Restful Actions :boom:
+### The rails convention
+(the only thing I agree with DHH on)
+
+---
+# :poop: CRUD :poop:
+---
+### CREATE
+
+```ruby
+class PostsController < ApplicationController
+  ...
+
+  def new
+    @post = Post.new
+  end
+
+  def create
+    @post = Post.new(post_params)
+
+    if @post.save
+      redirect_to :index, notice: "NOICE"
+    else
+        flash.now[:error] @post.errors.full_messages
+      render :new
+    end
+  end
+end
+```
