@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "@reecebisel/routes-magic",
+  "version": "3.0.9",
+  "scripts": {
+    "start": "mdx-deck slides.mdx",
+    "build": "mdx-deck build slides.mdx",
+    "help": "mdx-deck"
+  },
+  "devDependencies": {
+    "mdx-deck": "^3.0.9"
+  }
+}
