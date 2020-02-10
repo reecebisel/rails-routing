@@ -28,9 +28,6 @@ $ bundle exec rake routes
 
 ```bash
 $ bundle exec rake routes --expanded
-```
-
-```bash
 --[ Route 1 ]-------------------
 Prefix            |
 Verb              | GET
@@ -40,6 +37,7 @@ Controller#Action | pages#index
 
 ---
 ### Specifics
+
 ```bash
 $ bundle exec rake routes -g root
 $ bundle exec rake routes | grep root
@@ -52,26 +50,44 @@ $ bundle exec rake routes | grep root
 
 ---
 # :poop: CRUD :poop:
+
+<Appear>
+<li>Create</li>
+<li>Read</li>
+<li>Update</li>
+<li>Destroy</li>
+</Appear>
+
 ---
-### CREATE
+# Routing for convention
 
 ```ruby
-class PostsController < ApplicationController
-  ...
-
-  def new
-    @post = Post.new
-  end
-
-  def create
-    @post = Post.new(post_params)
-
-    if @post.save
-      redirect_to :index, notice: "NOICE"
-    else
-        flash.now[:error] @post.errors.full_messages
-      render :new
-    end
-  end
+Rails.applicaiton.routes.draw do
+  resources :posts
 end
+```
+
+---
+### :rainbow: Magic :rainbow:
+```bash
+Prefix Verb   URI Pattern          Controller#Action
+posts  GET    /posts(.:format)     posts#index
+       POST   /posts(.:format)     posts#create
+post   GET    /posts/:id(.:format) posts#show
+       PATCH  /posts/:id(.:format) posts#update
+       PUT    /posts/:id(.:format) posts#update
+       DELETE /posts/:id(.:format) posts#destroy
+```
+
+---
+# Filtering Resources
+
+```ruby
+resources :posts, only: %i[index]
+```
+---
+
+```bash
+Prefix Verb   URI Pattern          Controller#Action
+posts  GET    /posts(.:format)     posts#index
 ```
