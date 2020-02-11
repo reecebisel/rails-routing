@@ -69,17 +69,22 @@ end
 
 ---
 ### :rainbow: Magic :rainbow:
+
+<div style={{ fontSize: "0.75em" }}>
+
 ```bash
-Prefix    Verb   URI Pattern          Controller#Action
-posts     GET    /posts(.:format)     posts#index
-          POST   /posts(.:format)     posts#create
-post      GET    /posts/:id(.:format) posts#show
-          PATCH  /posts/:id(.:format) posts#update
-          PUT    /posts/:id(.:format) posts#update
-          DELETE /posts/:id(.:format) posts#destroy
-new_post  GET    /posts/new(.:format) posts#new
-edit_post GET    /posts/new(.:format) posts#new
+Prefix    Verb   URI Pattern           Controller#Action
+posts     GET    /posts(.:format)      posts#index
+          POST   /posts(.:format)      posts#create
+post      GET    /posts/:id(.:format)  posts#show
+          PATCH  /posts/:id(.:format)  posts#update
+          PUT    /posts/:id(.:format)  posts#update
+          DELETE /posts/:id(.:format)  posts#destroy
+new_post  GET    /posts/new(.:format)  posts#new
+edit_post GET    /posts/edit(.:format) posts#edit
 ```
+
+</div>
 
 ---
 # Filtering Resources
@@ -354,6 +359,8 @@ end
 ---
 ### Sometimes its okay to be shallow
 
+<div style={{ fontSize: "0.65em" }}>
+
 ```bash
        Prefix Verb   URI Pattern                        Controller#Action
 post_comments GET    /posts/:post_id/comments(.:format) comments#index
@@ -370,6 +377,8 @@ post_comments GET    /posts/:post_id/comments(.:format) comments#index
               DELETE /posts/:id(.:format)               posts#destroy
 ```
 
+</div>
+
 ---
 # Hiding the dependancy
 
@@ -383,6 +392,8 @@ end
 
 ---
 ### Totez Comments
+
+<div style={{ fontSize: "0.65em" }}>
 
 ```bash
        Prefix Verb   URI Pattern                        Controller#Action
@@ -400,9 +411,11 @@ post_comments GET    /posts/:post_id/comments(.:format) comments#index
               DELETE /posts/:id(.:format)               posts#destroy
 ```
 
+</div>
+
 ---
 # Concerns
-### Sharing is caring
+### :heart: Sharing is caring :heart:
 
 ---
 ### :tada: aka route partials :tada:
@@ -418,6 +431,8 @@ resources :articles, concerns: :commentable
 
 ---
 ### So many comments
+
+<div style={{ fontSize: "0.60em" }}>
 
 ```bash
           Prefix Verb   URI Pattern                                  Controller#Action
@@ -435,3 +450,89 @@ article_comments GET    /articles/:article_id/comments(.:format)     comments#in
                  DELETE /articles/:article_id/comments/:id(.:format) comments#destroy
 ```
 
+</div>
+
+---
+# Members only
+
+```ruby
+resources :posts
+  member do
+    get "totez"
+  end
+end
+```
+
+---
+### Totez posts 4 lyfe
+
+<div style={{ fontSize: "0.75em" }}>
+
+```bash
+    Prefix Verb URI Pattern                Controller#Action
+totez_post GET  /posts/:id/totez(.:format) posts#totez
+```
+
+</div>
+
+---
+# :trophy: Collections :trophy:
+
+```ruby
+resources :posts do
+  get "search", on: :collection
+end
+```
+
+---
+### Become the slueth
+
+<div style={{ fontSize: "0.75em" }}>
+
+```bash
+      Prefix Verb URI Pattern             Controller#Action
+search_posts GET  /posts/search(.:format) posts#search
+```
+
+</div>
+
+---
+# :black_joker: :tiger: Globbing & Wildcards :tiger: :black_joker:
+
+```ruby
+get 'photos/*other', to: 'photos#unknown'
+get 'books/*section/:title', to: 'books#show'
+```
+
+---
+
+<div style={{ fontSize: "0.75em" }}>
+
+```bash
+Prefix Verb   URI Pattern                      Controller#Action
+       GET    /photos/*other(.:format)         photos#unknown
+       GET    /books/*section/:title(.:format) books#show
+```
+
+</div>
+
+---
+# We can handle
+
+```
+  GET /photos/send_noods
+  GET /books/non-fiction/become+ravioli
+```
+---
+# :arrow_right: Redirection :arrow_left:
+
+```ruby
+   get '/stories', to: redirect('/articles')
+```
+---
+# Bait & Switch
+
+```bash
+ Prefix Verb URI Pattern        Controller#Action
+stories GET  /stories(.:format) redirect(301, /articles)
+```
