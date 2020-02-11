@@ -7,6 +7,14 @@ export const theme = themes.prism;
 # Rails Routes Sorcery
 
 ---
+# Get Ready
+
+<Image
+  src="https://media1.giphy.com/media/TI32JwHmWQEi4/giphy.gif?cid=6104955e6bb95f0094db1d9926d559a5158ba7fc9a8a9942&rid=giphy.gif"
+  size="800px"
+/>
+
+---
 ### This
 ```ruby
   root to: "pages#index"
@@ -22,12 +30,13 @@ root GET / pages#index
 ### Rake
 ```bash
 $ bundle exec rake routes
+$ bundle exec rails routes
 ```
 ---
 ### More details
 
 ```bash
-$ bundle exec rake routes --expanded
+$ bundle exec rails routes --expanded
 --[ Route 1 ]-------------------
 Prefix            |
 Verb              | GET
@@ -39,7 +48,7 @@ Controller#Action | pages#index
 ### Specifics
 
 ```bash
-$ bundle exec rake routes -g root
+$ bundle exec rails routes -g root
 $ bundle exec rake routes | grep root
 ```
 
@@ -536,3 +545,15 @@ Prefix Verb   URI Pattern                      Controller#Action
  Prefix Verb URI Pattern        Controller#Action
 stories GET  /stories(.:format) redirect(301, /articles)
 ```
+
+---
+# END
+
+(Finally)
+
+---
+### Remember
+<Image
+  src="https://media3.giphy.com/media/ToMjGpRhf96j23aTc5i/giphy.gif?cid=6104955e336a33f4103e5742ed0672f60c1d66d5a6e60431&rid=giphy.gif"
+  size="800px"
+/>
