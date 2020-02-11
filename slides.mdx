@@ -204,3 +204,31 @@ Prefix Verb URI Pattern          Controller#Action
 
 </SplitRight>
 
+---
+# :mag_right: Namespace :mag:
+
+---
+# This
+
+```ruby
+namespace hipster do
+  resources posts
+end
+```
+
+---
+### Shows
+
+<div style={{ fontSize: "0.75em" }}>
+
+```bash
+       Prefix Verb   URI Pattern        Controller#Action
+hipster_posts GET    /hipster/posts     hipster/posts#index
+              POST   /hipster/posts     hipster/posts#create
+ hipster_post GET    /hipster/posts/:id hipster/posts#show
+              PATCH  /hipster/posts/:id hipster/posts#update
+              PUT    /hipster/posts/:id hipster/posts#update
+              DELETE /hipster/posts/:id hipster/posts#destroy
+```
+
+</div>
