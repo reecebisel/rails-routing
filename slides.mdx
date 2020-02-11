@@ -70,6 +70,41 @@ end
 ---
 ### :rainbow: Magic :rainbow:
 ```bash
+Prefix    Verb   URI Pattern          Controller#Action
+posts     GET    /posts(.:format)     posts#index
+          POST   /posts(.:format)     posts#create
+post      GET    /posts/:id(.:format) posts#show
+          PATCH  /posts/:id(.:format) posts#update
+          PUT    /posts/:id(.:format) posts#update
+          DELETE /posts/:id(.:format) posts#destroy
+new_post  GET    /posts/new(.:format) posts#new
+edit_post GET    /posts/new(.:format) posts#new
+```
+
+---
+# Filtering Resources
+
+```ruby
+resources :posts, only: %i[index]
+```
+
+---
+### Gets you
+```bash
+Prefix Verb   URI Pattern          Controller#Action
+posts  GET    /posts(.:format)     posts#index
+```
+
+---
+# And this
+```ruby
+resources :posts, except: %i[new edit]
+```
+
+---
+### Provides
+
+```bash
 Prefix Verb   URI Pattern          Controller#Action
 posts  GET    /posts(.:format)     posts#index
        POST   /posts(.:format)     posts#create
@@ -80,14 +115,92 @@ post   GET    /posts/:id(.:format) posts#show
 ```
 
 ---
-# Filtering Resources
+# :skull_and_crossbones: Custom Actions :skull_and_crossbones:
+
+---
+# This garbage
 
 ```ruby
-resources :posts, only: %i[index]
+get "them_deetz", to: "posts#index"
 ```
+
 ---
+### Gives you
 
 ```bash
-Prefix Verb   URI Pattern          Controller#Action
-posts  GET    /posts(.:format)     posts#index
+Prefix     Verb URI Pattern           Controller#Action
+them_deetz GET  /them_deetz(.:format) posts#index
 ```
+
+---
+# :ribbon: Naming routes :ribbon:
+
+---
+# Given
+
+```ruby
+get "them_deetz", to: "posts#index",
+                  as: "tell_me_them_deetz"
+```
+
+---
+### You'll see
+
+```bash
+Prefix             Verb URI Pattern Controller#Action
+tell_me_them_deetz GET  /them_deetz posts#index
+```
+
+---
+## You'd refer to this path as
+
+```ruby
+tell_me_them_deetz_path
+tell_me_them_deetz_url
+```
+
+---
+# Match via
+
+```ruby
+match "posts", to: "posts#index", via: %i[get post]
+```
+
+---
+### Shows
+
+```bash
+Prefix Verb     URI Pattern      Controller#Action
+posts  GET|POST /posts(.:format) posts#index
+```
+
+---
+# :sparkles: Path Helpers :sparkles:
+
+---
+# The show path
+
+```ruby
+Prefix Verb URI Pattern          Controller#Action
+  post GET  /posts/:id(.:format) posts#show
+```
+
+---
+# Usage
+
+<SplitRight>
+
+```ruby
+  post_path(@post.id)
+
+  #=> /post/id
+```
+
+```ruby
+  post_url(@post)
+
+  #=> host.com/post/id
+```
+
+</SplitRight>
+
