@@ -232,3 +232,206 @@ hipster_posts GET    /hipster/posts     hipster/posts#index
 ```
 
 </div>
+
+---
+# Module Scoping
+
+```ruby
+scope module: "hipster" do
+  resources posts
+end
+```
+
+---
+### :clap: Ta-da :clap:
+
+```bash
+Prefix Verb   URI Pattern          Controller#Action
+ posts GET    /posts(.:format)     hipster/posts#index
+       POST   /posts(.:format)     hipster/posts#create
+  post GET    /posts/:id(.:format) hipster/posts#show
+       PATCH  /posts/:id(.:format) hipster/posts#update
+       PUT    /posts/:id(.:format) hipster/posts#update
+       DELETE /posts/:id(.:format) hipster/posts#destroy
+```
+
+---
+### Namespacing Urls Only
+
+```ruby
+scope "/hipster" do
+  resources posts
+end
+```
+
+---
+### Shows
+
+<div style={{ fontSize: "0.75em" }}>
+
+```bash
+Prefix Verb   URI Pattern                  Controller#Action
+ posts GET    /hipster/posts(.:format)     posts#index
+       POST   /hipster/posts(.:format)     posts#create
+  post GET    /hipster/posts/:id(.:format) posts#show
+       PATCH  /hipster/posts/:id(.:format) posts#update
+       PUT    /hipster/posts/:id(.:format) posts#update
+       DELETE /hipster/posts/:id(.:format) posts#destroy
+```
+
+</div>
+
+---
+# :bird: Nested Resources :bird:
+
+---
+# These Routes
+
+```ruby
+resources :posts do
+  resources :comments
+end
+```
+
+---
+### Presents These Routes
+
+<div style={{ fontSize: "0.70em" }}>
+
+```bash
+       Prefix Verb   URI Pattern                            Controller#Action
+post_comments GET    /posts/:post_id/comments(.:format)     comments#index
+              POST   /posts/:post_id/comments(.:format)     comments#create
+ post_comment GET    /posts/:post_id/comments/:id(.:format) comments#show
+              PATCH  /posts/:post_id/comments/:id(.:format) comments#update
+              PUT    /posts/:post_id/comments/:id(.:format) comments#update
+              DELETE /posts/:post_id/comments/:id(.:format) comments#destroy
+        posts GET    /posts(.:format)                       posts#index
+              POST   /posts(.:format)                       posts#create
+         post GET    /posts/:id(.:format)                   posts#show
+              PATCH  /posts/:id(.:format)                   posts#update
+              PUT    /posts/:id(.:format)                   posts#update
+              DELETE /posts/:id(.:format)                   posts#destroy
+
+```
+
+</div>
+
+---
+# In your controller
+
+<div style={{ fontSize: "0.60em" }}>
+
+```ruby
+  def index
+    @comments = @post.comments
+  end
+
+  def new
+    @comment = @post.comments.new
+  end
+
+  ...
+
+  private
+
+    def set_post
+      @post = Post.find_by params[:post_id]
+    end
+```
+
+</div>
+
+---
+# Shallow Nesting
+
+```ruby
+resources :posts, shallow: true do
+  resources :comments
+end
+```
+
+---
+### Sometimes its okay to be shallow
+
+```bash
+       Prefix Verb   URI Pattern                        Controller#Action
+post_comments GET    /posts/:post_id/comments(.:format) comments#index
+              POST   /posts/:post_id/comments(.:format) comments#create
+      comment GET    /comments/:id(.:format)            comments#show
+              PATCH  /comments/:id(.:format)            comments#update
+              PUT    /comments/:id(.:format)            comments#update
+              DELETE /comments/:id(.:format)            comments#destroy
+        posts GET    /posts(.:format)                   posts#index
+              POST   /posts(.:format)                   posts#create
+         post GET    /posts/:id(.:format)               posts#show
+              PATCH  /posts/:id(.:format)               posts#update
+              PUT    /posts/:id(.:format)               posts#update
+              DELETE /posts/:id(.:format)               posts#destroy
+```
+
+---
+# Hiding the dependancy
+
+```ruby
+scope shallow_path: "totez" do
+  resources :posts do
+    resources :comments, shallow: true
+  end
+end
+```
+
+---
+### Totez Comments
+
+```bash
+       Prefix Verb   URI Pattern                        Controller#Action
+post_comments GET    /posts/:post_id/comments(.:format) comments#index
+              POST   /posts/:post_id/comments(.:format) comments#create
+      comment GET    /totez/comments/:id(.:format)      comments#show
+              PATCH  /totez/comments/:id(.:format)      comments#update
+              PUT    /totez/comments/:id(.:format)      comments#update
+              DELETE /totez/comments/:id(.:format)      comments#destroy
+        posts GET    /posts(.:format)                   posts#index
+              POST   /posts(.:format)                   posts#create
+         post GET    /posts/:id(.:format)               posts#show
+              PATCH  /posts/:id(.:format)               posts#update
+              PUT    /posts/:id(.:format)               posts#update
+              DELETE /posts/:id(.:format)               posts#destroy
+```
+
+---
+# Concerns
+### Sharing is caring
+
+---
+### :tada: aka route partials :tada:
+
+```ruby
+concern :commentable do
+  resources :comments
+end
+
+resources :posts,    concerns: :commentable
+resources :articles, concerns: :commentable
+```
+
+---
+### So many comments
+
+```bash
+          Prefix Verb   URI Pattern                                  Controller#Action
+   post_comments GET    /posts/:post_id/comments(.:format)           comments#index
+                 POST   /posts/:post_id/comments(.:format)           comments#create
+    post_comment GET    /posts/:post_id/comments/:id(.:format)       comments#show
+                 PATCH  /posts/:post_id/comments/:id(.:format)       comments#update
+                 PUT    /posts/:post_id/comments/:id(.:format)       comments#update
+                 DELETE /posts/:post_id/comments/:id(.:format)       comments#destroy
+article_comments GET    /articles/:article_id/comments(.:format)     comments#index
+                 POST   /articles/:article_id/comments(.:format)     comments#create
+ article_comment GET    /articles/:article_id/comments/:id(.:format) comments#show
+                 PATCH  /articles/:article_id/comments/:id(.:format) comments#update
+                 PUT    /articles/:article_id/comments/:id(.:format) comments#update
+                 DELETE /articles/:article_id/comments/:id(.:format) comments#destroy
+```
+
